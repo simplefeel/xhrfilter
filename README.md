@@ -2,6 +2,12 @@
 # xhrfilter.js [![Build Status](https://travis-ci.org/simplefeel/xhrfilter.svg?branch=master)](https://travis-ci.org/simplefeel/xhrfilter.svg?branch=master)</br>
 >去重，阻止前端请求（原生xhr,ajax）的重复提交，不依赖任何库
 
+**xhrfilter.js**:
+- 全局节流重复的xhr请求，默认500ms内只发送一次重复的请求
+- 原生js编写，不依赖任何其它库
+- 大小只有1kb
+- 使用方便，全局引入后，无需做其它任何处理
+
 ## 什么情况下会产生重复xhr请求？
 
 >重复xhr请求定义：相同的请求地址，相同的请求参数
@@ -14,7 +20,7 @@
 1.前端全局拦截xhr请求，如果请求未完成，此时如果又有相同xhr请求，则取消掉这次请求。如何判定是否为相同请求，简单的判断依据是：相同的url以及相同的请求数据即为相同请求。<br/>
 2.前端请求事件去抖，比如一个form表单提交可以通过限制一定时间内只发一次请求来控制请求次数，比如可以使用lodash的_.debounce()方法
 
-> 本项目只处理第一种情况，第二种情况需要配合函数去抖实现
+> 本项目已经内置去抖机制，默认500ms内只发送一次重复请求
 
 ## Install
 
