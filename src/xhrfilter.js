@@ -120,9 +120,6 @@
 
         open: function (arg, xhr) {
             url = arg[1];
-            if (!pendingRequestUrl[url]) {
-                pendingRequestUrl[url] = xhr
-            }
         },
 
         onload: function (xhr) {
@@ -133,7 +130,6 @@
         send: function(arg, xhr) {
             var timeNow = Date.now();
             sendData = arg[0];
-
             if(!xhrTime[url]){
                 xhrTime[url] = Date.now();
             }else{
@@ -157,6 +153,8 @@
             }else{
                 if(pendingRequestUrl[url]){
                     pendingRequestUrl[url].abort()
+                }else{
+                    pendingRequestUrl[url] = xhr
                 }
             }
         }
