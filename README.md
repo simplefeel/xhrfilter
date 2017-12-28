@@ -2,7 +2,6 @@
 # xhrfilter.js [![Build Status](https://travis-ci.org/simplefeel/xhrfilter.svg?branch=master)](https://travis-ci.org/simplefeel/xhrfilter.svg?branch=master)</br>
 >去重，阻止前端请求（原生xhr,ajax）的重复提交，不依赖任何库
 
-**xhrfilter.js**:
 - 全局节流重复的xhr请求，默认500ms内只发送一次重复的请求
 - 原生js编写，不依赖任何其它库
 - 大小只有1kb
