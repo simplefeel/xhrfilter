@@ -146,7 +146,7 @@
                 if(!pendingData[url]){
                     pendingData[url] = sendData;
                 }else{
-                    if(isObjectValueEqual(sendData, pendingData[url])){
+                    if(isObjectValueEqual(sendData, pendingData[url]) && pendingRequestUrl[url]){
                         pendingRequestUrl[url].abort()
                     }
                 }
