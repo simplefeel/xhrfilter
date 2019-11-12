@@ -1,14 +1,13 @@
-!function(){
+! function () {
+
+    var pendingRequestUrl = {};
+    var pendingData = {};
+    var xhrTime = {};
+    var url = '';
+    var interval = 500;
+
     var ajaxPreFilter = function (funs) {
-
         window.soucexhr = window.soucexhr || window.XMLHttpRequest;
-
-        window.pendingRequestUrl = {};
-
-        window.pendingData = {};
-
-        window.xhrTime = {};
-
         //代理xhr对象
         window.XMLHttpRequest = function () {
             this.xhr = new window.soucexhr();
@@ -54,7 +53,7 @@
                     return
                 }
                 if (funs[attr]) {
-                    xhr[attr] = function(){
+                    xhr[attr] = function () {
                         funs[attr](that) || f.apply(xhr, arguments)
                     }
                 } else {
@@ -67,19 +66,12 @@
 
     }
 
-    var unPreFilter = function () {
-        if (window.soucexhr) {
-            XMLHttpRequest = window.soucexhr;
-        }
-        window.soucexhr = undefined;
-    }
-
     // 判断数据是否为空
     function isNotEmpty(value) {
-        if(value == null) {
+        if (value == null) {
             return false
         }
-        if(typeof value == "object") {
+        if (typeof value == "object") {
             return Object.keys(value).length != 0
         }
         return value.length != 0;
@@ -89,32 +81,41 @@
     function isObjectValueEqual(a, b) {
         var aProps = Object.getOwnPropertyNames(a);
         var bProps = Object.getOwnPropertyNames(b);
-    
+
         if (aProps.length != bProps.length) {
             return false;
         }
-    
+
         for (var i = 0; i < aProps.length; i++) {
             var propName = aProps[i];
-            if(isObj(a[propName])){
-                if(!isObj(b[propName])) return false;
-                isObjectValueEqual(a[propName],b[propName])
-            }else{
+            if (isObj(a[propName])) {
+                if (!isObj(b[propName])) return false;
+                isObjectValueEqual(a[propName], b[propName])
+            } else {
                 if (a[propName] !== b[propName]) {
                     return false;
                 }
             }
-            
+
         }
         return true;
+    }
+
+    function isEqualValue(a, b) {
+        let aType = typeof a,
+            bType = typeof b;
+        if (aType !== bType) {
+            return false
+        } else if (aType === bType && isObj(aType)) {
+            isObjectValueEqual(a, b)
+        } else if (aType === bType && !isObj(aType)) {
+            return a === b
+        }
     }
 
     function isObj(obj) {
         return Object.prototype.toString.call(obj) == '[object Object]'
     }
-
-    var url = '' , interval = 500;
-
 
     ajaxPreFilter({
 
@@ -127,33 +128,36 @@
             pendingData[url] = null;
         },
 
-        send: function(arg, xhr) {
+        send: function (arg, xhr) {
             var timeNow = Date.now();
             sendData = arg[0];
-            if(!xhrTime[url]){
+            // ---- 请求去抖 ---
+            if (!xhrTime[url]) {
                 xhrTime[url] = Date.now();
-            }else{
-                if(timeNow - xhrTime[url] <= interval){
+            } else {
+                if (timeNow - xhrTime[url] <= interval) {
                     xhrTime[url] = Date.now();
                     return true
-                }else{
+                } else {
                     xhrTime[url] = Date.now();
                 }
             }
+            // ----------
 
             // 相同url且相同数据请求则取消此次请求
-            if(isNotEmpty(sendData)){
-                if(!pendingData[url]){
+            if (isNotEmpty(sendData)) {
+                if (!pendingData[url]) {
                     pendingData[url] = sendData;
-                }else{
-                    if(isObjectValueEqual(sendData, pendingData[url]) && pendingRequestUrl[url]){
+                    pendingRequestUrl[url] = xhr
+                } else {
+                    if (isEqualValue(sendData, pendingData[url]) && pendingRequestUrl[url]) {
                         pendingRequestUrl[url].abort()
                     }
                 }
-            }else{
-                if(pendingRequestUrl[url]){
+            } else {
+                if (pendingRequestUrl[url]) {
                     pendingRequestUrl[url].abort()
-                }else{
+                } else {
                     pendingRequestUrl[url] = xhr
                 }
             }

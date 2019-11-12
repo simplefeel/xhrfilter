@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+  <script src="../src/xhrfilter.js"></script>
+  <title>重复请求</title>
+</head>
+
+<body>
+  <div id="content"></div>
+</body>
+
+<script>
+  function getDetail(url) {
+    $.ajax({
+      method: "POST",
+      url: url,
+      data: {
+        param: JSON.stringify({
+          "vItemId": "888024902649192231255"
+        })
+      }
+    }).done(function (res) {
+      $('#content').text(res.result.item_detail.desc_content[0].text)
+      console.log(res);
+    })
+  }
+
+  //----- 模拟 不允许短时间内发送相同的xhr请求---
+  // getDetail(
+  //   "https://thor.weidian.com/detail/getDetailDesc/1.0"
+  // );
+
+  // getDetail(
+  //   "https://thor.weidian.com/detail/getDetailDesc/1.0"
+  // );
+  // ---------------
+
+  getDetail(
+    "https://thor.weidian.com/detail/getDetailDesc/1.0"
+  );
+  setTimeout(function () {
+    getDetail(
+      "https://thor.weidian.com/detail/getDetailDesc/1.0"
+    );
+  }, 2000)
+
+  setTimeout(function () {
+    getDetail(
+      "https://thor.weidian.com/detail/getDetailDesc/1.0"
+    );
+  }, 2600)
+
+  // setTimeout(function () {
+  //   getDetail(
+  //     "https://thor.weidian.com/skittles/share.getUrl/1.0?param=%7B%22url%22%3A%22https%253A%252F%252Fweidian.com%252Fi%252F888024902649192231255%253Fifr%253Ditemdetail%22%7D&wdtoken=01ef4876&_=1573559850277"
+  //     );
+  // }, 2000)
+</script>
+
+</html>
