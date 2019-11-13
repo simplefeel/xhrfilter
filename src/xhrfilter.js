@@ -1,4 +1,4 @@
-! function () {
+!function () {
 
     var pendingRequestUrl = {};
     var pendingData = {};
@@ -28,19 +28,24 @@
         //拦截xhr方法，添加钩子方法
         function preFilter(fun) {
             return function () {
-                var args = [].slice.call(arguments);
+                var args = []
+                    .slice
+                    .call(arguments);
                 // 钩子方法返回 true，则不执行后续的原始xhr方法
                 if (funs[fun] && funs[fun].call(this, args, this.xhr)) {
                     return;
                 }
-                return this.xhr[fun].apply(this.xhr, args);
+                return this
+                    .xhr[fun]
+                    .apply(this.xhr, args);
             }
         }
 
-
         function getProperty(attr) {
             return function () {
-                return this.hasOwnProperty(attr + '_') ? this[attr + "_"] : this.xhr[attr]
+                return this.hasOwnProperty(attr + '_')
+                    ? this[attr + "_"]
+                    : this.xhr[attr]
             }
         }
 
@@ -72,7 +77,9 @@
             return false
         }
         if (typeof value == "object") {
-            return Object.keys(value).length != 0
+            return Object
+                .keys(value)
+                .length != 0
         }
         return value.length != 0;
     }
@@ -89,7 +96,8 @@
         for (var i = 0; i < aProps.length; i++) {
             var propName = aProps[i];
             if (isObj(a[propName])) {
-                if (!isObj(b[propName])) return false;
+                if (!isObj(b[propName])) 
+                    return false;
                 isObjectValueEqual(a[propName], b[propName])
             } else {
                 if (a[propName] !== b[propName]) {
@@ -114,7 +122,10 @@
     }
 
     function isObj(obj) {
-        return Object.prototype.toString.call(obj) == '[object Object]'
+        return Object
+            .prototype
+            .toString
+            .call(obj) == '[object Object]'
     }
 
     ajaxPreFilter({
@@ -142,21 +153,23 @@
                     xhrTime[url] = Date.now();
                 }
             }
-            // ----------
-
-            // 相同url且相同数据请求则取消此次请求
+            // ---------- 相同url且相同数据请求则取消此次请求
             if (isNotEmpty(sendData)) {
                 if (!pendingData[url]) {
                     pendingData[url] = sendData;
                     pendingRequestUrl[url] = xhr
                 } else {
                     if (isEqualValue(sendData, pendingData[url]) && pendingRequestUrl[url]) {
-                        pendingRequestUrl[url].abort()
+                        setTimeout(function () {
+                            xhr.abort()
+                        }, 0)
                     }
                 }
             } else {
                 if (pendingRequestUrl[url]) {
-                    pendingRequestUrl[url].abort()
+                    setTimeout(function () {
+                        xhr.abort()
+                    }, 0)
                 } else {
                     pendingRequestUrl[url] = xhr
                 }
