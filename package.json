@@ -1,5 +1,5 @@
 {
-  "name": "filterxhr",
+  "name": "xhrfilter",
   "version": "1.0.0",
   "description": "Prevents duplicate submission of front-end requests",
   "main": "dist/xhrfilter.min.js",

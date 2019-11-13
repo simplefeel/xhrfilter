@@ -24,12 +24,6 @@
 
 > 本项目已经内置去抖机制，默认500ms内只发送一次重复请求
 
-## Install
-
-1.CDN引入
-
-2.右键另存下载 [xhrfilter.min.js](https://github.com/simplefeel/xhrfilter/blob/master/dist/xhrfilter.min.js) 
-
 ## Usage
 
 > 在加载项目本身文件之前加载该js文件，内部无需任何处理
@@ -37,10 +31,16 @@
 1. CDN引入
   
 ```html
-<script src="https://unpkg.com/filterxhr@1.0.0/dist/xhrfilter.min.js"></script>
+<script src="https://unpkg.com/xhrfilter@1.0.0/dist/xhrfilter.min.js"></script>
 ```
 
-2. 本地下载
+2. NPM引入
+
+```js
+require('xhrfilter')
+```
+
+1. 手动引入（右键另存下载到本地） [xhrfilter.min.js](https://github.com/simplefeel/xhrfilter/blob/master/dist/xhrfilter.min.js) 
 ```html
 <script src='xhrfilter.min.js'></script>
 ``` 
