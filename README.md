@@ -40,7 +40,7 @@
 require('xhrfilter')
 ```
 
-1. 手动引入（右键另存下载到本地） [xhrfilter.min.js](https://github.com/simplefeel/xhrfilter/blob/master/dist/xhrfilter.min.js) 
+3. 手动引入（右键另存下载[xhrfilter.min.js](https://github.com/simplefeel/xhrfilter/blob/master/dist/xhrfilter.min.js) 到本地） 
 ```html
 <script src='xhrfilter.min.js'></script>
 ``` 
