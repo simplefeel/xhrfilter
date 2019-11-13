@@ -147,7 +147,6 @@
                 xhrTime[url] = Date.now();
             } else {
                 if (timeNow - xhrTime[url] <= interval) {
-                    xhrTime[url] = Date.now();
                     return true
                 } else {
                     xhrTime[url] = Date.now();
