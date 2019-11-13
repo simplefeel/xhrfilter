@@ -26,14 +26,24 @@
 
 ## Install
 
-右键另存下载 [xhrfilter.min.js](https://github.com/simplefeel/xhrfilter/blob/master/dist/xhrfilter.min.js) 
+1.CDN引入
+
+2.右键另存下载 [xhrfilter.min.js](https://github.com/simplefeel/xhrfilter/blob/master/dist/xhrfilter.min.js) 
 
 ## Usage
 
+> 在加载项目本身文件之前加载该js文件，内部无需任何处理
+
+1. CDN引入
+  
+```html
+<script src="https://unpkg.com/filterxhr@1.0.0/dist/xhrfilter.min.js"></script>
 ```
+
+2. 本地下载
+```html
 <script src='xhrfilter.min.js'></script>
 ``` 
-在加载项目本身文件之前加载该js文件，内部无需任何处理
 
 ## Relation
 
