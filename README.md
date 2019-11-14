@@ -1,5 +1,5 @@
 
-<h2 style="text-align:center"><img src="https://si.geilicdn.com/img-43f90000016e69ccedd80a2166a4_300_300.jpg" /></h2>
+<p style="text-align:center"><img src="https://si.geilicdn.com/img-43f90000016e69ccedd80a2166a4_300_300.jpg" /></p>
 
 # xhrfilter.js [![Build Status](https://travis-ci.org/simplefeel/xhrfilter.svg?branch=master)](https://travis-ci.org/simplefeel/xhrfilter.svg?branch=master)</br>
 
