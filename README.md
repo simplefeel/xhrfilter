@@ -1,4 +1,5 @@
 
+![](https://si.geilicdn.com/img-08b90000016e69c7c46a0a21924a_250_250.jpg)
 # xhrfilter.js [![Build Status](https://travis-ci.org/simplefeel/xhrfilter.svg?branch=master)](https://travis-ci.org/simplefeel/xhrfilter.svg?branch=master)</br>
 
 - 去重，全局节流重复的xhr请求，默认500ms内只发送一次重复的请求
