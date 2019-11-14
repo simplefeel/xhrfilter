@@ -60,7 +60,7 @@ require('xhrfilter')
 
 const xhrfilter = require('xhrfilter);
 
-xhrfilter.use(xhrDebounce)
+xhrfilter.use(xhrDebounce);
 
 // 请求去抖，500内发出的相同请求只发出一次
 function xhrDebounce(context, arg, xhr, conditions) {
