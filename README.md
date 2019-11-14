@@ -22,11 +22,8 @@
 
 3.还有一种比较繁琐的方式，比如一个form表单提交，可以在每次点击提交按钮之后置灰（disabled），服务端响应成功之后再还原按钮为可点击状态。这种方式需要在每个需要控制请求的地方都添加，我最开始的处理方式也是这种，然后项目中一旦涉及到有很多表单提交之类或者数据post请求之类的，就会特别繁琐，这也是xhrfilter.js诞生的背景。
 
-> 本项目已经内置去抖机制，默认500ms内只发送一次重复请求
+## 安装
 
-## Usage
-
-> 在加载项目本身文件之前加载该js文件，内部无需任何处理
 
 1. CDN引入
   
@@ -45,7 +42,83 @@ require('xhrfilter')
 <script src='xhrfilter.min.js'></script>
 ``` 
 
-## Relation
+## 使用
+
+> 本项目内置重复请求过滤，规则是：A请求发出，A请求结果还未返回，紧接着相同的B请求（判断相同请求的条件是相同的url和相同的请求参数）发出，则取消（absort）B请求
+
+**在加载项目本身文件之前加载该js文件，内部无需任何处理**
+
+
+## 扩展
+
+本项目支持扩展拦截请求的规则，可以通过暴露的`use(plugin)`方法，传入自定义的拦截处理逻辑
+
+案例一：
+
+```js
+<!-- npm引入包的方式 -->
+
+const xhrfilter = require('xhrfilter);
+
+xhrfilter.use(xhrDebounce)
+
+// 请求去抖，500内发出的相同请求只发出一次
+function xhrDebounce(context, arg, xhr, conditions) {
+  var timeNow = Date.now();
+  var url = conditions.url;
+  var bool = false;
+  if (!conditions.xhrTime[url]) {
+    conditions.xhrTime[url] = Date.now();
+  } else {
+    if (timeNow - conditions.xhrTime[url] <= 500) {
+      bool = true
+    } else {
+      conditions.xhrTime[url] = Date.now();
+    }
+  }
+  return bool
+}
+```
+
+案例二：
+
+```js
+<!-- CDN引入的方式 -->
+
+xhrfilter.use(xhrThrottle)
+
+var pendingUrl = {};
+
+// 不管是get请求还是post请求，只要url相同就去重
+function xhrThrottle(context, arg, xhr, conditions) {
+  var url = conditions.url;
+  if (pendingUrl[url]) {
+    setTimeout(function () {
+      xhr.abort()
+    }, 0)
+  } else {
+    pendingUrl[url] = xhr
+  }
+}
+
+```
+
+以上案例都可在项目`examples`文件夹下找到
+
+## API
+
+- xhrfilter.use(plugin)
+  - 参数：
+    - context 当前xhrfilter实例
+    - arg 当前请求的参数
+    - xhr 当前请求的 XMLHttpRequest 对象
+    - conditions 内部的一些参数，包含当前请求的 url 参数
+  - 用法：
+    安装自定义过滤逻辑插件
+  - 参考：
+    `examples`案例
+
+## 参考
 
 [ajaxHook](https://github.com/wendux/Ajax-hook) - 拦截xhr请求，添加自定义处理逻辑
 

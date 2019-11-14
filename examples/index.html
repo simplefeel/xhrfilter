@@ -7,7 +7,8 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script src="http://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
   <!-- <script src="../src/xhrfilter.js"></script> -->
-  <script src="https://unpkg.com/xhrfilter@1.0.0/dist/xhrfilter.min.js"></script>
+  <script src="../dist/xhrfilter.min.js"></script>
+  <!-- <script src="https://unpkg.com/xhrfilter@1.0.0/dist/xhrfilter.min.js"></script> -->
   <title>重复请求</title>
 </head>
 
@@ -16,6 +17,45 @@
 </body>
 
 <script>
+  var pendingUrl = {};
+
+  function xhrThrottle(context, arg, xhr, conditions) {
+    var url = conditions.url;
+    if (pendingUrl[url]) {
+      setTimeout(function () {
+        xhr.abort()
+      }, 0)
+    } else {
+      pendingUrl[url] = xhr
+    }
+  }
+
+  function xhrDebounce(context, arg, xhr, conditions) {
+    var timeNow = Date.now();
+    var url = conditions.url;
+    var bool = false;
+    // ---- 请求去抖 ---
+    if (!conditions.xhrTime[url]) {
+      conditions.xhrTime[url] = Date.now();
+    } else {
+      if (timeNow - conditions.xhrTime[url] <= 500) {
+        bool = true
+      } else {
+        conditions.xhrTime[url] = Date.now();
+      }
+    }
+    return bool
+  }
+
+
+  // 如果当前请求结果还没返回，下一次只要相同的url请求过来，即取消后一次请求
+  xhrfilter.use(xhrThrottle)
+
+  // 请求去抖
+  // xhrfilter.use(xhrDebounce)
+
+
+
   function getDetail(url) {
     $.ajax({
       method: "POST",
@@ -25,6 +65,17 @@
           "vItemId": "888024902649192231255"
         })
       }
+    }).done(function (res) {
+      $('#content').text(res.result.item_detail.desc_content[0].text)
+      console.log(res);
+    })
+  }
+
+  function getDesc(url, data) {
+    $.ajax({
+      method: "POST",
+      url: url,
+      data: data
     }).done(function (res) {
       $('#content').text(res.result.item_detail.desc_content[0].text)
       console.log(res);
@@ -47,6 +98,24 @@
   getDetail(
     "https://thor.weidian.com/detail/getDetailDesc/1.0"
   );
+  getDesc(
+    "https://thor.weidian.com/detail/getDetailDesc/1.0", {
+      param: JSON.stringify({
+        "vItemId": "12345678"
+      })
+    }
+  );
+  // getDesc(
+  //   "https://thor.weidian.com/detail/getDetailDesc/1.0", {
+  //     param: JSON.stringify({
+  //       "vItemId": "12345678"
+  //     })
+  //   }
+  // );
+
+  getDetail(
+    "https://thor.weidian.com/detail/getDetailDesc/1.0"
+  );
   setTimeout(function () {
     getDetail(
       "https://thor.weidian.com/detail/getDetailDesc/1.0"
@@ -63,7 +132,7 @@
     getDetail(
       "https://thor.weidian.com/detail/getDetailDesc/1.0"
     );
-  }, 2600)
+  }, 3100)
 
   // setTimeout(function () {
   //   getDetail(

@@ -1,6 +1,6 @@
 {
   "name": "xhrfilter",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Prevents duplicate submission of front-end requests",
   "main": "dist/xhrfilter.min.js",
   "homepage": "https://github.com/simplefeel/xhrfilter",
@@ -11,5 +11,6 @@
   "license": "ISC",
   "devDependencies": {
     "webpack": "^1.13.2"
-  }
+  },
+  "dependencies": {}
 }
