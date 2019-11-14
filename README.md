@@ -1,5 +1,6 @@
 
 <img src="https://si.geilicdn.com/img-43f90000016e69ccedd80a2166a4_300_300.jpg" style="text-align:center"/>
+
 # xhrfilter.js [![Build Status](https://travis-ci.org/simplefeel/xhrfilter.svg?branch=master)](https://travis-ci.org/simplefeel/xhrfilter.svg?branch=master)</br>
 
 - 去重，全局节流重复的xhr请求，默认500ms内只发送一次重复的请求
